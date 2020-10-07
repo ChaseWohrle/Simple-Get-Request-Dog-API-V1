@@ -1,7 +1,7 @@
 'use strict';
 
 function getDogImage() {
-  fetch('https://dog.ceo/api/breeds/image/random')
+  fetch('https://dog.ceo/api/breeds/image/random/3')
     .then(response => response.json())
     .then(responseJson => 
       displayResults(responseJson))
