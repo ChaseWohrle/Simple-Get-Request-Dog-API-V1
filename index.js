@@ -1,27 +1,38 @@
 'use strict';
 
-function getDogImage() {
-  fetch('https://dog.ceo/api/breeds/image/random/50')
+function getDogImage(inputNumber) {
+  console.log(inputNumber);
+  fetch(`https://dog.ceo/api/breeds/image/random/${inputNumber}`)
     .then(response => response.json())
     .then(responseJson => 
       displayResults(responseJson))
-    .catch(error => alert('Something went wrong. Try again later.'));
+    .catch(error => alert(error));
 }
 
 function displayResults(responseJson) {
   console.log(responseJson);
-  //replace the existing image with the new one
-  $('.results-img').replaceWith(
-    `<img src="${responseJson.message}" class="results-img">`
-  )
-  //display the results section
-  $('.results').removeClass('hidden');
+  let pictures = responseJson.message;
+  let img_list = document.getElementById("img-list");
+  img_list.innerHTML = '';
+  for (let i = 0; i < pictures.length; i++ ) {
+     var li = document.createElement('LI');
+     var img = document.createElement('IMG');
+     img.src = pictures[i]; 
+     li.appendChild(img);
+     img_list.append(li);
+  }
+
 }
 
 function watchForm() {
   $('form').submit(event => {
     event.preventDefault();
-    getDogImage();
+    const inputNumber = $('#input-number').val();
+    if (!inputNumber) {
+      getDogImage("3");
+    } else {
+      getDogImage(inputNumber);
+    }
   });
 }
 
@@ -29,3 +40,4 @@ $(function() {
   console.log('App loaded! Waiting for submit!');
   watchForm();
 });
+
